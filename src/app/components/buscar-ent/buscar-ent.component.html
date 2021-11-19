@@ -164,7 +164,12 @@
             <div class="row">
               <div class="col-lg-3 col-md-6 col-xs-6">
                 <h5>Cartera <small>(Condiciones)</small></h5>
-                <select name="" id="" class="form-control input">
+                <select
+                  name=""
+                  id=""
+                  class="form-control input"
+                  formControlName="ent_cartera_condicion"
+                >
                   <option value="">Seleccione...</option>
                   <option value="1">Mayor que</option>
                   <option value="2">Menor que</option>
@@ -253,6 +258,23 @@
                     [value]="i.org_id"
                   >
                     {{ i.org_nombre }}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+              <div
+                class="col-lg-6 col-md-12 col-xs-6"
+                [hidden]="!validaOrgano()"
+              >
+                <h5>Nivel</h5>
+                <mat-select
+                  multiple
+                  formControlName="nivel_supervision"
+                  placeholder="Nivel"
+                  class="form-control input"
+                >
+                  <mat-option *ngFor="let i of listaNiveles" [value]="i.id">
+                    {{ i.label }}
                   </mat-option>
                 </mat-select>
               </div>

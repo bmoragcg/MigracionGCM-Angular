@@ -45,6 +45,7 @@ export class BuscarEntComponent implements OnInit {
   listaTipo: OrganoTipoEntidad[] = [];
   listaMeses: any[];
   listaDias: any[];
+  listaNiveles: any[];
 
   spinner = {
     init: false,
@@ -138,6 +139,7 @@ export class BuscarEntComponent implements OnInit {
         ent_nit: [{ value: '', disabled: true }],
         ent_ruc: [{ value: '', disabled: true }],
         ent_cartera: [{ value: '', disabled: true }],
+        ent_cartera_condicion: [{ value: '', disabled: true }],
         org_id: [{ value: '', disabled: true }],
         tpe_id: [{ value: '', disabled: true }],
         nivel_supervision: [{ value: '', disabled: true }],
@@ -204,23 +206,45 @@ export class BuscarEntComponent implements OnInit {
   }
 
   dataByOrg($event: any): void {
+    console.log($event);
+
     this.spinner.byOrg = true;
     this.buscarEntidadSrvc.dataByOrg($event.join(',')).subscribe((r) => {
       this.spinner.byOrg = false;
 
       this.listaTipo = r.tipos;
     });
+
+    if ($event.includes(2)) {
+      this.listaNiveles = [
+        { id: 1, label: 'nivel 1' },
+        { id: 2, label: 'nivel 2' },
+        { id: 3, label: 'nivel 3' },
+      ];
+    }
+  }
+
+  validaOrgano(): boolean {
+    let arrItems = [];
+
+    arrItems = this.frmBuscar.get('entidad')?.value['org_id'];
+
+    return arrItems.includes(2);
   }
 
   filterData(): void {
-    Object.keys(this.frmBuscar.value).forEach((elm: string) =>
-      Object.entries(this.frmBuscar.get(elm)?.value).forEach((value: any[]) => {
-        if (value[1] !== '') {
-          this.arrayParams[value[0]] = { [value[0]]: value[1] };
-        }
-      })
-    );
+    console.log('Entre');
 
+    console.log(this.frmBuscar.value);
+
+    // Object.keys(this.frmBuscar.value).forEach((elm: string) =>
+    //   Object.entries(this.frmBuscar.get(elm)?.value).forEach((value: any[]) => {
+    //     if (value[1] !== '') {
+    //       this.arrayParams[value[0]] = { [value[0]]: value[1] };
+    //     }
+    //   })
+    // );
+    //--------------------------
     // Object.keys(this.frmBuscar.value).forEach((e: string, i) => {
     //   Object.keys(this.frmBuscar.value[e]).forEach((a, b) => {
     //     if (this.frmBuscar.value[e][a] !== '') {
@@ -228,7 +252,6 @@ export class BuscarEntComponent implements OnInit {
     //     }
     //   });
     // });
-
     // this.buscarEntidadSrvc.filterData(this.arrayParams).subscribe((r) => {
     //   this.listaEntidades = r.data;
     // });
