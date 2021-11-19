@@ -1,0 +1,42 @@
+.cardContainer{
+  background: #ffffff;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+.titulo{
+  color: #2F2A2A;
+  font-size: 15px;
+}
+
+h5{
+  color: #2F2A2A !important;
+  font-size: 14px;
+}
+
+.input
+{
+  color: #545454 !important; 
+	background-color: #f4f4f4 !important;
+	border: 1px solid #e1e1e1 !important;
+	border-radius: 5px !important;
+}
+
+.btn-georeferenciar {
+  padding: 20px 10px;
+  background-image: url(//www.clker.com/cliparts/1/e/q/F/I/H/worldmap-grey-hi.png);
+  // background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  background-color: rgb(42, 45, 53) !important;
+  border: none;
+  color: #fff !important;
+  font-weight: 600;
+  // text-shadow: 0px 1px 4px rgb(0, 0, 0);
+  width: 100%;
+}
+
+.margin-button {
+  margin-bottom: 12px;
+}
+

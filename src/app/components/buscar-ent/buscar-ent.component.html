@@ -1,0 +1,559 @@
+<div class="div">
+  <form [formGroup]="frmBuscar">
+    <div class="row animated fadeIn">
+      <div class="col-lg-5 col-md-5" formGroupName="sucursal">
+        <div class="card cardContainer">
+          <div class="card-header">
+            <label for="" class="titulo">Zona</label>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-xs-6">
+                <h5 class="titulo">
+                  Pais
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.init"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+                <mat-select
+                  multiple
+                  placeholder="Seleccione..."
+                  (selectionChange)="dataByPais($event)"
+                  formControlName="pai_id"
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaPaises"
+                    [value]="i.pai_id"
+                    >{{ i.pai_nombre }}</mat-option
+                  >
+                </mat-select>
+              </div>
+
+              <div class="col-lg-6 col-md-12 col-xs-6">
+                <h5 class="titulo">
+                  Departamento
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.byPais"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+                <mat-select
+                  multiple
+                  formControlName="dep_id"
+                  (selectionChange)="dataByDep($event)"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaDepartamentos"
+                    [value]="i.dep_id"
+                    >{{ i.dep_nombre }}</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-xs-6">
+                <h5 class="titulo">
+                  Municipio/Ciudad
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.byDep"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+                <mat-select
+                  multiple
+                  formControlName="ciu_id"
+                  (selectionChange)="dataByCiu($event)"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaCiudades"
+                    [value]="i.ciu_id"
+                  >
+                    {{ i.ciu_nombre }}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="col-lg-6 col-md-12 col-xs-6">
+                <h5 class="titulo">
+                  Comuna
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.byCiu"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+                <mat-select
+                  multiple
+                  formControlName="com_id"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option *ngFor="let i of listaComuna" [value]="i.com_id">
+                    {{ i.com_nombre }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 col-md-7" formGroupName="entidad">
+        <div class="card cardContainer">
+          <div class="card-header">
+            <label for="" class="titulo">Entidad</label>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Nombre</h5>
+                <input
+                  type="text"
+                  class="form-control input"
+                  placeholder="Nombre"
+                  formControlName="ent_razon_social"
+                />
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Sigla</h5>
+                <input
+                  type="text"
+                  class="form-control input"
+                  placeholder="Sigla"
+                  formControlName="ent_sigla"
+                />
+              </div>
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Nit</h5>
+                <input
+                  type="text"
+                  class="form-control input"
+                  placeholder="Nit"
+                  formControlName="ent_nit"
+                />
+              </div>
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>RUC</h5>
+                <input
+                  type="text"
+                  class="form-control input"
+                  placeholder="Ruc"
+                  formControlName="ent_ruc"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Cartera <small>(Condiciones)</small></h5>
+                <select name="" id="" class="form-control input">
+                  <option value="">Seleccione...</option>
+                  <option value="1">Mayor que</option>
+                  <option value="2">Menor que</option>
+                  <option value="3">Mayor o igual que</option>
+                  <option value="4">Menor o igual que</option>
+                </select>
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Cartera</h5>
+                <input
+                  type="text"
+                  class="form-control input"
+                  placeholder="Cartera"
+                  formControlName="ent_cartera"
+                />
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Tipo cliente</h5>
+                <mat-select
+                  multiple
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="
+                      let i of [
+                        { id: 1, txt: 'Prospecto sin corizacion' },
+                        { id: 2, txt: 'Cliente activo' },
+                        { id: 3, txt: 'Prospecto con corizacion' },
+                        { id: 4, txt: 'Cliente inactivo' }
+                      ]
+                    "
+                    [value]="i.id"
+                    >{{ i.txt }}</mat-option
+                  >
+                </mat-select>
+              </div>
+
+              <div class="col-lg-3 col-md-6 col-xs-6">
+                <h5>Tipo negocio</h5>
+                <mat-select
+                  multiple
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="
+                      let i of [
+                        { id: 1, txt: 'Cobertura' },
+                        { id: 2, txt: 'Consultoría' },
+                        { id: 3, txt: 'Recuperación' },
+                        { id: 4, txt: 'Entrenamiento' }
+                      ]
+                    "
+                    [value]="i.id"
+                    >{{ i.txt }}</mat-option
+                  >
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="row animated fadeIn"> -->
+      <div class="col-lg-5 col-md-5" formGroupName="entidad">
+        <div class="card cardContainer" style="margin-top: 10px">
+          <div class="card-header">
+            <label for="" class="titulo">Clasificación</label>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-xs-6">
+                <h5>Organo control</h5>
+                <mat-select
+                  multiple
+                  formControlName="org_id"
+                  (ngModelChange)="dataByOrg($event)"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaOrganoControl"
+                    [value]="i.org_id"
+                  >
+                    {{ i.org_nombre }}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+              <div class="col-lg-6 col-md-12 col-xs-6">
+                <h5>
+                  Tipo entidad
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.byOrg"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+                <mat-select
+                  multiple
+                  formControlName="tpe_id"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaTipo"
+                    [value]="i.tipo_entidad.tpe_id"
+                  >
+                    {{ i.tipo_entidad.tpe_nombre }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 col-md-7" formGroupName="entidad">
+        <div class="card cardContainer" style="margin-top: 10px">
+          <div class="card-header">
+            <label for="" class="titulo">Especiales</label>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-xs-6">
+                <h5>
+                  Entidades asignadas a comercial
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.init"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+
+                <mat-select
+                  multiple
+                  formControlName="emp_username"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaComerciales"
+                    [value]="i.emp_username"
+                  >
+                    {{ i.emp_pnombre }} {{ i.emp_papellido }}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-xs-6">
+                <h5>
+                  Negocios cerrados por comercial
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.init"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+
+                <mat-select
+                  multiple
+                  formControlName="emp_username"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option
+                    *ngFor="let i of listaComerciales"
+                    [value]="i.emp_username"
+                  >
+                    {{ i.emp_pnombre }} {{ i.emp_papellido }}
+                  </mat-option>
+                </mat-select>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-xs-6">
+                <h5>Cotizaciones realizadas</h5>
+                <select name="" id="" class="form-control input">
+                  <option value="">Cobertura</option>
+                  <option value="">Consultoría</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-8 col-md-7" formGroupName="empleado">
+          <div class="card cardContainer" style="margin-top: 10px">
+            <div class="card-header">
+              <label for="" class="titulo">Contactos</label>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Primer nombre</h5>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    formControlName="emp_pnombre"
+                  />
+                </div>
+
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Segundo nombre</h5>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    formControlName="emp_snombre"
+                  />
+                </div>
+
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Primer apellido</h5>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    formControlName="emp_papellido"
+                  />
+                </div>
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Segundo apellido</h5>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    formControlName="emp_sapellido"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>
+                    Cargo
+                    <div
+                      class="spinner-border text-gcm float-right"
+                      role="status"
+                      *ngIf="spinner.init"
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </h5>
+
+                  <mat-select
+                    multiple
+                    formControlName="emp_cargo"
+                    placeholder="Seleccione..."
+                    class="form-control input"
+                  >
+                    <mat-option
+                      *ngFor="let i of listaCargos"
+                      [value]="i.car_id"
+                    >
+                      {{ i.car_nombre }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Sexo</h5>
+                  <select
+                    name=""
+                    id=""
+                    class="form-control input"
+                    formControlName="emp_sexo"
+                  >
+                    <option value="">Seleccione...</option>
+                    <option value="m">Masculino</option>
+                    <option value="f">Femenino</option>
+                  </select>
+                </div>
+
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Cedula</h5>
+                  <input
+                    type="text"
+                    class="form-control input"
+                    placeholder="Cedula"
+                    formControlName="emp_identificacion"
+                  />
+                </div>
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Mes cumpleaños</h5>
+                  <mat-select
+                    multiple
+                    formControlName="emp_mes_cumpleanios"
+                    placeholder="Mes cumpleaños"
+                    class="form-control input"
+                  >
+                    <mat-option *ngFor="let i of listaMeses" [value]="i.id">
+                      {{ i.label }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Dia Cumpleaños</h5>
+                  <mat-select
+                    multiple
+                    formControlName="emp_dia_cumpleanios"
+                    placeholder="Dia cumpleaños"
+                    class="form-control input"
+                  >
+                    <mat-option *ngFor="let i of listaDias" [value]="i.id">{{
+                      i.label
+                    }}</mat-option>
+                  </mat-select>
+                </div>
+
+                <div class="col-lg-3 col-md-2 col-xs-6">
+                  <h5>Red</h5>
+                  <mat-select
+                    multiple
+                    formControlName="red_id"
+                    placeholder="Red"
+                    class="form-control input"
+                  >
+                    <mat-option
+                      *ngFor="let i of listaRedes"
+                      [value]="i.red_id"
+                      >{{ i.red_nombre }}</mat-option
+                    >
+                  </mat-select>
+                </div>
+
+                <div class="col-lg-6 col-md-2 col-xs-6">
+                  <h5>Email</h5>
+                  <input
+                    type="mail"
+                    class="form-control input"
+                    placeholder="Email"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-5">
+          <div class="card cardContainer" style="margin-top: 10px">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <a
+                    href="#"
+                    style="width: 100%"
+                    class="btn btn-w-md btn-warning margin-button"
+                    ><i class="fa fa-eraser"></i> Limpiar</a
+                  >
+
+                  <input
+                    type="submit"
+                    style="width: 100%"
+                    (click)="filterData()"
+                    class="btn btn-w-md btn-gcm margin-button"
+                    value="Filtrar"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <a class="btn btn-georeferenciar">
+                    <span
+                      ><i
+                        class="fas fa-map-marker-alt icon-nav-sidebar"
+                        aria-hidden="true"
+                      ></i
+                      ><br />Georreferenciar</span
+                    >
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--  -->
+    </div>
+  </form>
+</div>

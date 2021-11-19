@@ -1,0 +1,132 @@
+<div class="wrapper">
+  <nav class="navbar navbar-expand-md navbar-default fixed-top">
+    <div class="navbar-header">
+      <div id="mobile-menu">
+        <div class="left-nav-toggle">
+          <a href="#">
+            <i class="material-icons size-27">menu</i>
+            <!-- <i class="stroke-hamburgermenu"></i> -->
+          </a>
+        </div>
+      </div>
+      <a class="navbar-brand" href="!#">
+        GCM
+        <span>v.2.0</span>
+      </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <div class="left-nav-toggle">
+        <a href="#">
+          <i class="material-icons size-27">menu</i>
+          <!-- <i class="stroke-hamburgermenu"></i> -->
+        </a>
+      </div>
+
+      <ul
+        class="nav navbar-nav"
+        style="float: right; right: 0; position: absolute"
+      >
+        <li id="fat-menu" class="profil-link dropdown">
+          <a
+            href=""
+            class="dropdown-toggle"
+            id="options-nav-right"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="true"
+          >
+            <span class="profile-address">Hola, {{ user.emp_pnombre }}</span>
+            <img
+              src="https://garantiascomunitarias.com/pmi/imagenes/usuarios/{{
+                user.emp_username
+              }}.png"
+              class="img-circle"
+              alt=""
+            />
+          </a>
+          <ul
+            id="animate-options-nav-right"
+            class="dropdown-menu dropdown-menu-no-padding"
+            aria-labelledby="options-nav-right"
+          >
+            <li>
+              <a href="" (click)="cerrarSesion($event)" class="padding-10_20">
+                <i class="fa fa-sign-out color-grey" aria-hidden="true"></i>
+                Cerrar sesión
+              </a>
+            </li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item profil-link">
+          <a href="login.html">
+            <span class="profile-address">luna@company.io</span>
+            <img src="images/profile.jpg" class="rounded-circle" alt="">
+          </a>
+        </li> -->
+      </ul>
+    </div>
+  </nav>
+
+  <aside class="navigation">
+    <ul class="nav luna-nav">
+      <!-- menu -->
+      <li class="nav-item" *ngFor="let m of menu">
+        <a class="nav-link active" href="#" *ngIf="m.mod_link !== '#'">{{
+          m.mod_nombre
+        }}</a>
+
+        <!-- submenu -->
+        <a
+          href="#menu{{ m.mod_id }}"
+          data-toggle="collapse"
+          aria-expanded="false"
+          class="nav-link"
+          *ngIf="m.mod_link == '#'"
+        >
+          {{ m.mod_nombre
+          }}<span class="sub-nav-icon"> <i class="stroke-arrow"></i> </span>
+        </a>
+
+        <!-- lista de submenu -->
+        <ul
+          id="menu{{ m.mod_id }}"
+          class="nav nav-second collapse"
+          *ngIf="m.mod_link == '#'"
+        >
+          <li class="nav-second-width" *ngFor="let p of m.parent">
+            <a
+              class="nav-link active"
+              href="nav/{{ p.mod_link }}"
+              *ngIf="p.mod_link !== '#'"
+              >{{ p.mod_nombre }}</a
+            >
+
+            <a
+              href="#menu{{ p.mod_id }}"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="nav-link"
+              *ngIf="p.mod_link == '#'"
+            >
+              {{ p.mod_nombre
+              }}<span class="sub-nav-icon"> <i class="stroke-arrow"></i> </span>
+            </a>
+
+            <ul
+              id="menu{{ p.mod_id }}"
+              class="nav nav-second collapse"
+              *ngIf="p.mod_link == '#'"
+            >
+              <li class="nav-second-width" *ngFor="let p2 of p.parent">
+                <a class="nav-link active" href="metrics.html">{{
+                  p2.mod_nombre
+                }}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+</div>

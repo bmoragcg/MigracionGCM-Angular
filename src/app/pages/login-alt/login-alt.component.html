@@ -1,0 +1,40 @@
+<div class="container" style="width: 20%">
+  <form [formGroup]="formLogin">
+    <input
+      type="text"
+      formControlName="username"
+      placeholder="Usuario"
+      class="form-control input-distancia"
+    />
+    <p
+      *ngIf="
+        formLogin.get('username')?.touched &&
+        formLogin.get('username')?.hasError('required')
+      "
+    >
+      El campo usuario es requerido
+    </p>
+
+    <input
+      type="password"
+      formControlName="password"
+      placeholder="Contraseña"
+      class="form-control input-distancia"
+    />
+    <p
+      *ngIf="
+        formLogin.get('password')?.touched &&
+        formLogin.get('password')?.hasError('required')
+      "
+    >
+      El campo contraseña es requerido
+    </p>
+
+    <input
+      type="submit"
+      (click)="login()"
+      class="btn btn-success input-distancia btn-block"
+      [disabled]="!formLogin.valid"
+    />
+  </form>
+</div>
