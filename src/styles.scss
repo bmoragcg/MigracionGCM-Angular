@@ -181,6 +181,15 @@ fieldset[disabled] .btn-accent.focus {
   background-color: #949ba2;
 }
 
+.float-right{
+ float: right;
+}
+
+.float-left{
+  float: left;
+}
+
+
 .btn-default {
   color: #949ba2 !important;
   background-color: transparent !important;
@@ -1218,7 +1227,7 @@ mark {
 }
 
 label {
-  color: $white;
+  color: #2F2A2A;
   font-weight: 500;
 }
 
@@ -2981,9 +2990,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 12px;
 }
 
-input[type="checkbox"] {
-  visibility: hidden;
-}
+// input[type="checkbox"] {
+//   // visibility: hidden;
+
+// }
+
+
 label {
   cursor: pointer;
 }

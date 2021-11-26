@@ -8,6 +8,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptors/httoconfig.interceptor';
 import { MaterialModule } from './material/material.module';
 
+// import { AgmCoreModule } from '@agm/core';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -16,6 +18,9 @@ import { MaterialModule } from './material/material.module';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
+    // AgmCoreModule.forRoot({
+    //   apiKey: 'AIzaSyCBA23DmjYFWAB-V8bvIPVDuWs5fVdRnW8',
+    // }),
   ],
   providers: [
     {

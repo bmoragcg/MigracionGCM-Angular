@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Sucursal } from '../../interfaces/sucursal.interface';
 import { Pais } from '../../interfaces/pais.interface';
@@ -10,10 +11,18 @@ import { Empleado } from '../../interfaces/empleado.interface';
 import { Entidad } from '../../interfaces/entidad.interface';
 import { Organocontrol } from '../../interfaces/organoControl.interface';
 import { Redes } from '../../interfaces/redes.interface';
-import { BuscarEntidadService } from '../../services/buscar-entidad.service';
 import { OrganoTipoEntidad } from '../../interfaces/organoTipoEntidad.interface';
 import { Options } from 'select2';
 import { Cargo } from '../../interfaces/cargo.interface';
+import { BuscarEntidadService } from '../../services/buscar-entidad.service';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { GeoreferenciacionComponent } from '../otros/georeferenciacion/georeferenciacion.component';
+
+declare let alertify: any;
 
 interface ArrayParams {
   sucursal: any | Object;
@@ -28,6 +37,15 @@ interface ArrayParams {
 })
 export class BuscarEntComponent implements OnInit {
   public options: Options;
+
+  p: number = 1;
+  count: number = 0;
+  filterTerm: string;
+  total: number;
+  tableSizes = [10, 20, 30, 40, 50, 60];
+  total_show: number = 30;
+  totalRegistros: number = 0;
+  mostrarTabla = false;
 
   @Input() tipo: string;
 
@@ -54,13 +72,6 @@ export class BuscarEntComponent implements OnInit {
     byCiu: false,
     byOrg: false,
   };
-
-  // disabledInputs = {
-  //   isDisabled: true,
-  //   cotizacion: true,
-  //   negocioCerrado: true,
-  //   comercial: true,
-  // };
 
   getMes(): any[] {
     return [
@@ -122,7 +133,8 @@ export class BuscarEntComponent implements OnInit {
 
   constructor(
     private buscarEntidadSrvc: BuscarEntidadService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -143,7 +155,12 @@ export class BuscarEntComponent implements OnInit {
         org_id: [{ value: '', disabled: true }],
         tpe_id: [{ value: '', disabled: true }],
         nivel_supervision: [{ value: '', disabled: true }],
-        emp_username: [{ value: '', disabled: true }],
+        comercial: [{ value: '', disabled: true }],
+        comercialNegocio: [{ value: '', disabled: true }],
+        cotizacion: [{ value: '', disabled: true }],
+        tipoCliente: [{ value: '', disabled: true }],
+        tipoNegocio: [{ value: '', disabled: true }],
+        // tipoNegocioEntrenamiento: [{ value: '', disabled: true }],
       }),
       empleado: this.formBuilder.group({
         emp_pnombre: [{ value: '', disabled: true }],
@@ -226,34 +243,68 @@ export class BuscarEntComponent implements OnInit {
 
   validaOrgano(): boolean {
     let arrItems = [];
-
     arrItems = this.frmBuscar.get('entidad')?.value['org_id'];
-
     return arrItems.includes(2);
   }
 
+  // validaTipoNegocioEntrenamiento($event: any): void {
+  //   let resultado = $event.value.find((r: any) => r == 4);
+
+  //   if (resultado != undefined) {
+  //     this.frmBuscar
+  //       .get('entidad')
+  //       ?.get('tipoNegocioEntrenamiento')
+  //       ?.setValue(4);
+  //   }
+  // }
+
   filterData(): void {
-    console.log('Entre');
+    Object.keys(this.frmBuscar.value).forEach((e: string, i) => {
+      Object.keys(this.frmBuscar.value[e]).forEach((a, b) => {
+        if (this.frmBuscar.value[e][a] !== '') {
+          if (!(e in this.arrayParams)) {
+            this.arrayParams[e] = {};
+          }
+          this.arrayParams[e][a] = this.frmBuscar.value[e][a];
+        }
+      });
+    });
 
-    console.log(this.frmBuscar.value);
+    console.log(this.arrayParams);
+    this.buscarEntidadSrvc
+      .filterData(this.arrayParams)
+      .subscribe((response: any) => {
+        if (response.length > 0) {
+          this.mostrarTabla = true;
+          this.totalRegistros = response.length;
+          this.listaEntidades = response;
 
-    // Object.keys(this.frmBuscar.value).forEach((elm: string) =>
-    //   Object.entries(this.frmBuscar.get(elm)?.value).forEach((value: any[]) => {
-    //     if (value[1] !== '') {
-    //       this.arrayParams[value[0]] = { [value[0]]: value[1] };
-    //     }
-    //   })
-    // );
-    //--------------------------
-    // Object.keys(this.frmBuscar.value).forEach((e: string, i) => {
-    //   Object.keys(this.frmBuscar.value[e]).forEach((a, b) => {
-    //     if (this.frmBuscar.value[e][a] !== '') {
-    //       this.arrayParams[e] = { [a]: this.frmBuscar.value[e][a] };
-    //     }
-    //   });
-    // });
-    // this.buscarEntidadSrvc.filterData(this.arrayParams).subscribe((r) => {
-    //   this.listaEntidades = r.data;
-    // });
+          console.log(this.listaEntidades);
+        } else {
+          alertify.error('No se encontraron datos');
+        }
+      });
+  }
+
+  georeferenciarGeneral(): void {
+    // this.initMap();
+  }
+
+  openDialog(): void {
+    this.buscarEntidadSrvc
+      .filterData(this.arrayParams)
+      .subscribe((response) => {
+        const dialogRef = this.dialog.open(GeoreferenciacionComponent, {
+          width: '1000px',
+          panelClass: 'panel-class',
+          data: {
+            datos: response,
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((resultado) => {
+          console.log(resultado);
+        });
+      });
   }
 }

@@ -4,7 +4,7 @@
       <div class="col-lg-5 col-md-5" formGroupName="sucursal">
         <div class="card cardContainer">
           <div class="card-header">
-            <label for="" class="titulo">Zona</label>
+            <label for="">Zona</label>
           </div>
           <div class="card-body">
             <div class="row">
@@ -118,7 +118,7 @@
       <div class="col-lg-7 col-md-7" formGroupName="entidad">
         <div class="card cardContainer">
           <div class="card-header">
-            <label for="" class="titulo">Entidad</label>
+            <label for="">Entidad</label>
           </div>
           <div class="card-body">
             <div class="row">
@@ -216,6 +216,7 @@
                   multiple
                   placeholder="Seleccione..."
                   class="form-control input"
+                  formControlName="tipoNegocio"
                 >
                   <mat-option
                     *ngFor="
@@ -240,7 +241,7 @@
       <div class="col-lg-5 col-md-5" formGroupName="entidad">
         <div class="card cardContainer" style="margin-top: 10px">
           <div class="card-header">
-            <label for="" class="titulo">Clasificación</label>
+            <label for="">Clasificación</label>
           </div>
           <div class="card-body">
             <div class="row">
@@ -312,7 +313,7 @@
       <div class="col-lg-7 col-md-7" formGroupName="entidad">
         <div class="card cardContainer" style="margin-top: 10px">
           <div class="card-header">
-            <label for="" class="titulo">Especiales</label>
+            <label for="">Especiales</label>
           </div>
           <div class="card-body">
             <div class="row">
@@ -330,7 +331,7 @@
 
                 <mat-select
                   multiple
-                  formControlName="emp_username"
+                  formControlName="comercial"
                   placeholder="Seleccione..."
                   class="form-control input"
                 >
@@ -357,7 +358,7 @@
 
                 <mat-select
                   multiple
-                  formControlName="emp_username"
+                  formControlName="comercialNegocio"
                   placeholder="Seleccione..."
                   class="form-control input"
                 >
@@ -371,12 +372,35 @@
               </div>
 
               <div class="col-lg-4 col-md-6 col-xs-6">
+                <h5>
+                  Cotizaciones realizadas
+                  <div
+                    class="spinner-border text-gcm float-right"
+                    role="status"
+                    *ngIf="spinner.init"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </h5>
+
+                <mat-select
+                  multiple
+                  formControlName="cotizacion"
+                  placeholder="Seleccione..."
+                  class="form-control input"
+                >
+                  <mat-option value="Cobertura">Cobertura</mat-option>
+                  <mat-option value="Consultoria">Consultoría</mat-option>
+                </mat-select>
+              </div>
+
+              <!-- <div class="col-lg-4 col-md-6 col-xs-6">
                 <h5>Cotizaciones realizadas</h5>
                 <select name="" id="" class="form-control input">
                   <option value="">Cobertura</option>
                   <option value="">Consultoría</option>
                 </select>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -386,7 +410,7 @@
         <div class="col-lg-8 col-md-7" formGroupName="empleado">
           <div class="card cardContainer" style="margin-top: 10px">
             <div class="card-header">
-              <label for="" class="titulo">Contactos</label>
+              <label for="">Contactos</label>
             </div>
             <div class="card-body">
               <div class="row">
@@ -559,7 +583,7 @@
 
               <div class="row">
                 <div class="col-lg-12">
-                  <a class="btn btn-georeferenciar">
+                  <a class="btn btn-georeferenciar" (click)="openDialog()">
                     <span
                       ><i
                         class="fas fa-map-marker-alt icon-nav-sidebar"
@@ -578,4 +602,185 @@
       <!--  -->
     </div>
   </form>
+
+  <div class="row" style="margin-top: 20px" *ngIf="mostrarTabla">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="clearfix">
+                <div class="float-left">
+                  <span class="num-registros ng-binding"
+                    >{{ totalRegistros | number }} Registros encontrados</span
+                  >
+                </div>
+
+                <div class="float-right" style="width: 30%">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <button
+                        type="button"
+                        title="Descargar entidades"
+                        class="btn btn-gcm btn-sm float-right"
+                      >
+                        <i class="far fa-file-excel"></i>
+                        <small> Descargar entidades</small>
+                      </button>
+                    </div>
+
+                    <div class="col-md-6">
+                      <button
+                        type="button"
+                        title="Descargar contactos"
+                        class="btn btn-gcm btn-sm float-right"
+                      >
+                        <i class="far fa-file-excel"></i>
+                        <small> Descargar contactos</small>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 15px">
+            <div class="col-md-12"></div>
+            <div class="clearfix">
+              <form>
+                <div class="float-left" style="width: 20%">
+                  <div class="row">
+                    <label for="staticEmail" class="col-sm-3 col-form-label"
+                      >Mostrar</label
+                    >
+                    <div class="col-sm-4">
+                      <mat-select
+                        class="form-control input"
+                        [(ngModel)]="total_show"
+                        name="totalVista"
+                      >
+                        <mat-option
+                          *ngFor="let size of tableSizes"
+                          [value]="size"
+                        >
+                          {{ size }}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                    <label for="pwd" class="col-sm-4 col-form-label"
+                      >Registros</label
+                    >
+                  </div>
+                </div>
+
+                <div class="float-right" style="width: 55%">
+                  <div class="row">
+                    <div class="col-lg-4">
+                      <button class="btn btn-gcm" style="width: 100%">
+                        Generar campaña
+                      </button>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <button class="btn btn-gcm" style="width: 100%">
+                        Asignar entidades
+                      </button>
+                    </div>
+                    <div class="form-group col-lg-4">
+                      <div class="row">
+                        <label for="pwd" class="col-lg-4 col-form-label"
+                          >Buscar:</label
+                        >
+                        <div class="col-lg-8">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="filter"
+                              placeholder="Search..."
+                              [(ngModel)]="filterTerm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Entidad</th>
+                <th>Contactos <i class="fas fa-arrow-circle-up"></i></th>
+                <th>Sigla</th>
+                <th>Pais</th>
+                <th>Depto</th>
+                <th>Municipio</th>
+                <th>Cartera</th>
+                <th>Acciones</th>
+                <th>
+                  Asignar
+                  <input
+                    type="checkbox"
+                    ng-model="allCheck"
+                    ng-change="checkAsignarEnt('all')"
+                    class="ng-pristine ng-untouched ng-valid ng-empty"
+                  />
+                </th>
+              </tr>
+
+              <tr
+                *ngFor="
+                  let i of listaEntidades
+                    | filter: filterTerm
+                    | paginate
+                      : {
+                          itemsPerPage: total_show,
+                          currentPage: p
+                        }
+                "
+              >
+                <td>{{ i.ent_razon_social }}</td>
+                <td></td>
+                <td>{{ i.ent_sigla }}</td>
+                <td>{{ i.sucursal_principal[0].pais.pai_nombre }}</td>
+                <td>{{ i.sucursal_principal[0].departamento.dep_nombre }}</td>
+                <td>{{ i.sucursal_principal[0].ciudad.ciu_nombre }}</td>
+                <td>{{ i.ent_cartera }}</td>
+                <td class="font-12">
+                  <a href="" class="btn btn-default" title="Ver detalle">
+                    <i class="fa fa-list-alt dove-gray" aria-hidden="true"></i>
+                  </a>
+                </td>
+                <td style="text-align: center">
+                  <input
+                    type="checkbox"
+                    ng-model="filtersTable.check"
+                    ng-change="checkAsignarEnt(filtersTable)"
+                    class="
+                      ng-pristine ng-untouched ng-valid ng-empty
+                      checkboxPersonalizado
+                    "
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls
+            class="float-right"
+            (pageChange)="p = $event"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            screenReaderPageLabel="page"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

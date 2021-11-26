@@ -1,0 +1,113 @@
+<div>
+  <button
+    type="button"
+    class="close"
+    data-dismiss="modal"
+    aria-label="Close"
+    style="float: right"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h4 class="modal-title">
+    <i class="fa fa-map-marker icon-color-primary"></i> Georreferenciación
+  </h4>
+  <div class="modal-body padding-0">
+    <div id="map_canvas"></div>
+
+    <div id="legend">
+      <h3>Legend</h3>
+    </div>
+
+    <div
+      class="panel panel-filled panel-detalle slideInRight animated"
+      style="background: #fff"
+      ng-if="detalle"
+    >
+      <button type="button" class="btn btn-clear close-button">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="panel-header text-center">
+        <b ng-if="tipoDetalle == 1">Información básica</b>
+        <b ng-if="tipoDetalle == 2">Información Financiera</b>
+        <b ng-if="tipoDetalle == 3">Datos de producto</b>
+      </div>
+
+      <div class="panel-body">
+        <div class="row" ng-if="tipoDetalle == 1">
+          <div class="col-md-4"><b>Dirección: </b> sucDireccion</div>
+
+          <div class="col-md-4"><b>Teléfono: </b> sucTelefono</div>
+
+          <div class="col-md-4">
+            <b>Página Web: </b>
+            <a target="_target" class="pagina-web"></a>
+          </div>
+        </div>
+
+        <div class="row" ng-if="tipoDetalle == 2">
+          <div class="col-md-6" style="top: 3px">
+            <b>Cartera: </b> detCartera
+          </div>
+
+          <div class="col-md-6"><b>Activos: </b> detActivos</div>
+        </div>
+
+        <div class="row" ng-if="tipoDetalle == 3">
+          <div class="col-md-12" style="top: 3px">
+            El último movilizado fue el<b> ValorMes</b> del
+            <b>ValorAnnio</b> de: valores
+          </div>
+        </div>
+
+        <div class="row" ng-if="tipoDetalle == 4">
+          <div class="col-md-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Servicio</th>
+                  <th>Comercial</th>
+                  <th>Fecha creacion</th>
+                  <th>Descargar</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>Cobertura</td>
+                  <td>Comercial</td>
+                  <td></td>
+                  <td>
+                    <a target="_blank" class="btn btn-warning btn-xs">
+                      <i class="far fa-file-pdf" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr ng-repeat="con in detCotizacion.consultoria">
+                  <td>Consultoría</td>
+                  <td>Comercial</td>
+                  <td>fechaIngreso</td>
+                  <td>
+                    <a target="_blank" class="btn btn-warning btn-xs">
+                      <i class="far fa-file-pdf" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer footer-modal-map">
+    <!-- <button
+      type="button"
+      class="btn btn-sm btn-success"
+      mat-dialog-close
+      (click)="foo(coordenadas)"
+    >
+      Guardar y cerrar
+    </button> -->
+  </div>
+</div>
